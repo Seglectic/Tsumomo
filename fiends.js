@@ -13,6 +13,17 @@ this.level = function(){
 
 }
 
+this.newFiend = function(pLvl){
+	var fiend = {}
+	switch (pLvl){
+		case (pLvl<=8): return new this.slime();
+		
+	}
+
+
+
+}
+
 
 
 									//Slime

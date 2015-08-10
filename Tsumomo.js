@@ -21,19 +21,19 @@ var fight = require('./fight');
 Tsumomo = function(server){
 	if (!server){this.server="irc.rizon.net";} else{this.server= server;}
 	
-	var self = this; 							//Gives local context reference to events
+	var self = this; 				//Gives local context reference to events
 	this.version = "0.7";
-	this.name= "Tsumomo2[Beta]";				//Nick
-	this.options = { 							//IRC configuration object
+	this.name= "Tsumomo2[Beta]";	//Nick
+	this.options = { 				//IRC configuration object
 		userName: "TsumomoBeta",
 		realName: "TsumomoBETA",
-		channels:["#momoLab","#testchan"],
+		channels:["#momoLab"],
 	};
 	this.Players = {};
 	this.momoMart = {};
 	this.Queue = {};
 	this.path = "./"+self.server+"_data.json"
-	console.log("\n        [Booting %s FW.%s on %s]\n",this.name,this.version,this.server);
+	console.log("\n        \x1b[32m [Booting %s FW.%s on %s]  \x1b[0m \n",this.name,this.version,this.server);
 	this.tsumomo = new irc.Client(this.server,this.name,this.options);
 	
 
@@ -270,7 +270,12 @@ Tsumomo = function(server){
 	this.tsumomo.addListener("message",this.msgProcess);
 	
 	
-	//setInterval(function(){console.log(self.server)})
+	this.handleError = function(message){
+		 console.log('Error: ', message)
+	}
+
 }
+
+process.stdout.write('\033c'); //Clear screen
 
 Tsumomo()
