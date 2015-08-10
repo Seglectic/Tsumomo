@@ -1,12 +1,12 @@
 	/*
 						TSUMOMO IRC BOT
 
-		Tsumomo is an IRC chat bot designed as a controller for
+		Tsumomo is an IRC chat bot designed as a operator  for
 		a  text-based  MMORPG  with an IRC interface written in
 		JavaScript for Node.js. 
 
-		Tsumomo uses the node-irc library for connectivity and 
-		communication. API available at: https://goo.gl/w9rsns
+		Tsumomo uses the node-irc  library  for  connectivity  and 
+		communication. Whose API available at: https://goo.gl/w9rsns
 		
 		-Segger 2015
 	*/
