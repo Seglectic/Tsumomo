@@ -25,7 +25,16 @@ this.levelUp = function(self,target,player){
 
 //Fights a NPC fiend. 
 this.npc = function(self,target,player){
-		if (!player.fiend || player.fiend.hp<=0){
+	if(new Date() < player.fightTime){
+		self.pm(player.nick,"wait plox");
+		return undefined;
+	}else{
+		var fTime = new Date();
+		fTime.setTime(fTime.getTime()+1800000); 				//Curtime+30min
+		player.fightTime = fTime;
+	}
+
+	if (!player.fiend || player.fiend.hp<=0){
 		player.fiend = new fiends.slime();
 		self.pm(player.nick,player.fiend.encounter);
 	}

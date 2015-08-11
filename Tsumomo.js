@@ -15,7 +15,6 @@
 var irc = require('irc');
 var fs = require('fs');
 var fight = require('./fight');
-//var fiend = require('./fiend');
 
 	//MAIN TSUMOMO OBJECT
 Tsumomo = function(server){
@@ -23,16 +22,16 @@ Tsumomo = function(server){
 	
 	var self = this; 				//Gives local context reference to events
 	this.version = "0.7";
-	this.name= "Tsumomo2[Beta]";	//Nick
+	this.name= "Tsumomo";	//Nick
 	this.options = { 				//IRC configuration object
-		userName: "TsumomoBeta",
-		realName: "TsumomoBETA",
+		userName: "Tsumomo",
+		realName: "Tsumomo",
 		channels:["#momoLab"],
 	};
 	this.Players = {};
 	this.momoMart = {};
 	this.Queue = {};
-	this.path = "./"+self.server+"_data.json"
+	this.path = "./SAVEDATA ["+self.server+"].json"
 	console.log("\n        \x1b[32m [Booting %s FW.%s on %s]  \x1b[0m \n",this.name,this.version,this.server);
 	this.tsumomo = new irc.Client(this.server,this.name,this.options);
 	
@@ -52,7 +51,7 @@ Tsumomo = function(server){
 		var dataString = JSON.stringify(data);
 		fs.writeFile(self.path,dataString);
 		if (verbose){
-			console.log("					[Data Saved]");
+			console.log("			[Data Saved]");
 		}
 	}
 
@@ -62,6 +61,7 @@ Tsumomo = function(server){
 			function(err,dataString){
 				if (err){
 					console.log("               ! ! ! ERROR LOADING FILE ! ! !\n");
+					self.Players = false;		//Sets players to false to indicate error.
 					return;
 				}else{
 					console.log("                [Data Loaded Successfully]\n");
@@ -101,8 +101,8 @@ Tsumomo = function(server){
 	this.player = function(nick,defaults){
 		this.nick = nick;
 		this.yen = 0;
-		this.yenTimer = 0;
-		fightTimer = 0;
+		this.yenTime = new Date(2015,1,1,1,1,1,1);
+		this.fightTime = new Date(2015,1,1,1,1,1,1);
 		this.level = 3;
 		this.xp = 0;
 		this.str = 8;
@@ -126,12 +126,12 @@ Tsumomo = function(server){
 	//Send message to channel or nick.
 	this.say = function(target,text){
 		self.tsumomo.say(target,text)
-		console.log("Tsumomo| "+text);
+		console.log("\x1b[46m","Tsumomo| "+text,"\x1b[0m");
 	};
 
 	this.pm = function(nick,text){
 		self.tsumomo.notice(nick,text);
-		console.log("->"+nick.substring(0,10)+"<-",text);
+		console.log("\x1b[46m","->"+nick.substring(0,10)+"<-",text,"\x1b[0m");
 	};
 
 	//Request to check user status; Queue nick and command.
@@ -249,12 +249,23 @@ Tsumomo = function(server){
 	//Handles incoming messages.
 	this.msgProcess = function(nick, target, text, message){
 		console.log(nick.substring(0,10)+"| "+text) //Display chat messages
+		
 		var command = text.split(" ");
+
+		if(!self.Players){ //Handle messages upon savedata load error
+			if (command[0].toLowerCase() == "!save"){
+				self.Players = {};
+				self.save(true);
+			}
+			return undefined;
+		}
 
 		if (!(nick in self.Players)){
 			self.requestStatus(nick,target,text);
 			return undefined;
-		} 
+		}
+
+		self.save();
 
 		switch(command[0].toLowerCase()){
 			case "!yen": self.yen(nick,target,text); break;
@@ -263,9 +274,10 @@ Tsumomo = function(server){
 			case "!stats": self.stats(nick,target,text); break;
 			case "!fight": self.fight(nick,target,text); break;
 			case "!reset": self.reset(nick,target,text); break;
-			case "!rez": self.rez(nick,target,text); break;
+			case "!rez": self.rez(nick,target,text); break
 		}
-		self.save();
+
+		
 	}
 	this.tsumomo.addListener("message",this.msgProcess);
 	
