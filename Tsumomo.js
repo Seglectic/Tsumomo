@@ -6,7 +6,7 @@
 		JavaScript for Node.js. 
 
 		Tsumomo uses the node-irc  library  for  connectivity  and 
-		communication. Whose API available at: https://goo.gl/w9rsns
+		communication. IRC API available at: https://goo.gl/w9rsns
 		
 		-Segger 2015
 	*/
@@ -274,7 +274,7 @@ Tsumomo = function(server){
 			case "!stats": self.stats(nick,target,text); break;
 			case "!fight": self.fight(nick,target,text); break;
 			case "!reset": self.reset(nick,target,text); break;
-			case "!rez": self.rez(nick,target,text); break
+			case "!rez": self.rez(nick,target,text); break;
 		}
 
 		

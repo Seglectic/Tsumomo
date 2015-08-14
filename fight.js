@@ -27,6 +27,7 @@ this.levelUp = function(self,target,player){
 this.npc = function(self,target,player){
 	if(new Date() < player.fightTime){
 		self.pm(player.nick,"wait plox");
+		console.log(player.fightTime - new Date());
 		return undefined;
 	}else{
 		var fTime = new Date();
