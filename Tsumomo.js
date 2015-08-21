@@ -15,6 +15,7 @@
 var irc = require('irc');
 var fs = require('fs');
 var fight = require('./fight');
+var mart = require('./mart');
 
 	//MAIN TSUMOMO OBJECT
 Tsumomo = function(server){
