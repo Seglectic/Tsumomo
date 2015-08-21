@@ -68,12 +68,6 @@ Tsumomo = function(server){
 					data = JSON.parse(dataString);
 					self.Players = data.Players;
 					self.momoMart = data.momoMart;
-					for (player in data.Players){
-						console.log("BLOP")
-						//if (!(self.Players.hasOwnProperty(player))){continue;}
-						//console.log(player);
-					}						
-
 				}
 			}
 		);
@@ -107,8 +101,8 @@ Tsumomo = function(server){
 	this.player = function(nick,defaults){
 		this.nick = nick;
 		this.yen = 0;
-		this.yenTime = new Date(2015,1,1,1,1,1,1);
-		this.fightTime = new Date(2015,1,1,1,1,1,1);
+		this.yenTime = new Date(2015,1,1,1,1,1,1).getTime();
+		this.fightTime = new Date(2015,1,1,1,1,1,1).getTime();
 		this.level = 3;
 		this.xp = 0;
 		this.str = 8;
@@ -191,7 +185,6 @@ Tsumomo = function(server){
 		var p = self.Players[nick];
 		var display = cat("%s | ¥%s | LVL %s [%s XP] | %s/%sHP %s STR %s DEF | Wielding: %s | Wearing: %s |",nick,p.yen,p.level,p.xp,p.hp,p.hpMax,p.str,p.def,p.wearing,p.wielding);
 		self.say(target,display);
-		self.say(p.fightTime);
 	};
 
 	//Fight fiends [OUTSOURCE FILE]

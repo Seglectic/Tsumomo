@@ -25,13 +25,12 @@ this.levelUp = function(self,target,player){
 
 //Fights a NPC fiend. 
 this.npc = function(self,target,player){
-	if(new Date() < player.fightTime){
+	if(new Date().getTime() < player.fightTime){
 		self.pm(player.nick,"wait plox");
-		console.log(player.fightTime - new Date());
-		return undefined;
+		return false;
 	}else{
-		var fTime = new Date();
-		fTime.setTime(fTime.getTime()+1800000); 				//Curtime+30min
+		var min = 30; //30 minutes till next fight
+		var fTime = new Date().getTime + (min*60000) ;
 		player.fightTime = fTime;
 	}
 
