@@ -26,11 +26,13 @@ this.levelUp = function(self,target,player){
 //Fights a NPC fiend. 
 this.npc = function(self,target,player){
 	if(new Date().getTime() < player.fightTime){
-		self.pm(player.nick,"wait plox");
+		var remaining = player.fightTime- new Date().getTime();
+		remaining = Math.ceil(remaining/60000)
+		self.pm(player.nick,"You'll still be tired for another "+remaining+" minutes!");
 		return false;
 	}else{
 		var min = 30; //30 minutes till next fight
-		var fTime = new Date().getTime + (min*60000) ;
+		var fTime = new Date().getTime() + (min*60000) ;
 		player.fightTime = fTime;
 	}
 

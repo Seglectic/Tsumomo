@@ -27,6 +27,7 @@ Tsumomo = function(server){
 		userName: "Tsumomo",
 		realName: "Tsumomo",
 		channels:["#momoLab"],
+		autoRejoin: true,
 	};
 	this.Players = {};
 	this.momoMart = {};
@@ -167,9 +168,21 @@ Tsumomo = function(server){
 
 	//Gives user random amount of yen.
 	this.yen = function(nick,target,text){
+		var player = self.Players[nick]
+		if(new Date().getTime() < player.yenTime){
+			var remaining = player.yenTime- new Date().getTime();
+			remaining = Math.ceil(remaining/60000)
+			self.pm(player.nick,"You can collect more yen in "+remaining+" minutes! ^-^");
+			return false;
+		}else{
+			var min = 30; //30 minutes till next fight
+			var yTime = new Date().getTime() + (min*60000) ;
+			player.yenTime = yTime;
+		}
+
 		var yen = self.RNG(1,20);
-		self.Players[nick].yen += yen;
-		var wallet = self.Players[nick].yen;
+		player.yen += yen;
+		var wallet = player.yen;
 		var display = self.cat("%s got ¥%s yen! You now have ¥%s!",nick,yen,wallet);
 		self.say(target,display);
 	};
