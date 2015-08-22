@@ -28,7 +28,7 @@ this.npc = function(self,target,player){
 	if(new Date().getTime() < player.fightTime){
 		var remaining = player.fightTime- new Date().getTime();
 		remaining = Math.ceil(remaining/60000)
-		self.pm(player.nick,"You'll still be tired for another "+remaining+" minutes!");
+		self.pm(player.nick,"You'll be tired for another "+remaining+" minutes!");
 		return false;
 	}else{
 		var min = 30; //30 minutes till next fight
@@ -52,6 +52,7 @@ this.npc = function(self,target,player){
 	var damageChance = Math.random()+0.2;			 			//Hit percentage			
 	var fPwr = Math.ceil(fiend.str*damageChance)+fiend.level;	//Strike power scaling
 	var fDmg = fPwr-(player.def+player.armor.def);
+	console.log(player.armor);
 
 	//Display actions performed
 	var pDmgMsg =self.cat("%s deals %s DMG to the %s! ",player.nick,pDmg,fiend.detailName);

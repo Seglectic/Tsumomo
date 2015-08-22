@@ -29,7 +29,7 @@ Tsumomo = function(server){
 	this.options = { 				//IRC configuration object
 		userName: "Tsumomo",
 		realName: "Tsumomo",
-		channels:["#momoLab","#Fluffington"],
+		channels:["#momoLab"],
 		autoRejoin: true,
 	};
 	this.Players = {};
@@ -113,8 +113,8 @@ Tsumomo = function(server){
 		this.def = 3;
 		this.hp = 15;
 		this.hpMax = this.hp;
-		this.armor = new items.starterWeapon() ;
-		this.weapon = new items.starterArmor() ;
+		this.armor = new items.starterArmor() ;
+		this.weapon = new items.starterWeapon() ;
 		this.inventory = [];
 		this.fiend = undefined;
 	}
@@ -199,14 +199,18 @@ Tsumomo = function(server){
 			return;
 		}
 		var p = self.Players[nick];
-		var display = cat("%s | ¥%s | LVL %s [%s XP] | %s/%sHP %s STR %s DEF | Wielding %s | Wearing %s |",nick,p.yen,p.level,p.xp,p.hp,p.hpMax,p.str,p.def,p.armor.detail,p.weapon.detail);
+		var display = cat("%s | ¥%s | LVL %s [%s XP] | %s/%sHP %s STR %s DEF | Wearing %s | Wielding %s |",nick,p.yen,p.level,p.xp,p.hp,p.hpMax,p.str,p.def,p.armor.detail,p.weapon.detail);
 		self.say(target,display);
 	};
 
-	//Fight fiends [OUTSOURCE FILE]
+	//Fight fiends
 	this.fight = function(nick,target,text){
+		var text = text.split(" ");
+		if (text[1] in self.Players){
+			self.pm(nick,"Fighting other players will be implemented soon.")
+			return false;
+		};
 		fight.npc(self,target,Players[nick]);
-		
 	};
 
 	//Resets a player's stats 
