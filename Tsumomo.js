@@ -174,6 +174,14 @@ Tsumomo = function(server){
 	//Gives user random amount of yen.
 	this.yen = function(nick,target,text){
 		var player = self.Players[nick]
+
+		if (player.hp<=0){ 												//Is player dead?
+			deathmsg = self.cat("%s, dead bodies cannot take yen. ;-;",player.nick);
+			self.say(target, deathmsg); 
+			return false;
+		}
+
+
 		if(new Date().getTime() < player.yenTime){
 			var remaining = player.yenTime- new Date().getTime();
 			remaining = Math.ceil(remaining/60000)

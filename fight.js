@@ -25,18 +25,26 @@ this.levelUp = function(self,target,player){
 
 //Fights a NPC fiend. 
 this.npc = function(self,target,player){
-	if(new Date().getTime() < player.fightTime){
+	
+	if (player.hp<=0){ 												//Is player dead?
+		deathmsg = self.cat("%s, your soul must be retrieved before you may fight again. [%s/%s HP]",player.nick,player.hp,player.hpMax);
+		self.say(target, deathmsg); 
+		return false;
+	}
+
+	if(new Date().getTime() < player.fightTime){ 					//Time Check
 		var remaining = player.fightTime- new Date().getTime();
 		remaining = Math.ceil(remaining/60000)
 		self.pm(player.nick,"You'll be tired for another "+remaining+" minutes!");
 		return false;
 	}else{
-		var min = 30; //30 minutes till next fight
+		var min = 30;												//30 minutes till next fight
 		var fTime = new Date().getTime() + (min*60000) ;
 		player.fightTime = fTime;
 	}
 
-	if (!player.fiend || player.fiend.hp<=0){
+
+	if (!player.fiend || player.fiend.hp<=0){						//Is fiend dead?
 		player.fiend = new fiends.slime();
 		self.pm(player.nick,player.fiend.encounter);
 	}
@@ -44,13 +52,13 @@ this.npc = function(self,target,player){
 	fiend = player.fiend;
 
 	//Damage to enemy
-	var strikeChance = Math.random()+0.3;			 			//Player's hit percentage			
+	var strikeChance = Math.random()+0.3;			 				//Player's hit percentage			
 	var pwr = Math.ceil(player.str*strikeChance)+player.weapon.dmg;	//Strike power scaling
 	var pDmg = pwr-(fiend.def);
 
 	//Damage to player
-	var damageChance = Math.random()+0.2;			 			//Hit percentage			
-	var fPwr = Math.ceil(fiend.str*damageChance)+fiend.level;	//Strike power scaling
+	var damageChance = Math.random()+0.2;			 				//Hit percentage			
+	var fPwr = Math.ceil(fiend.str*damageChance)+fiend.level;		//Strike power scaling
 	var fDmg = fPwr-(player.def+player.armor.def);
 
 	//Display actions performed
