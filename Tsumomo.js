@@ -29,7 +29,8 @@ Tsumomo = function(server){
 	this.options = { 				//IRC configuration object
 		userName: "Tsumomo",
 		realName: "Tsumomo",
-		channels:["#momoLab","#e-hentai","#Fluffington"],
+		//channels:["#momoLab","#e-hentai","#Fluffington"],
+		channels:["#momoLab"],
 		autoRejoin: true,
 	};
 	this.Players = {};
@@ -130,12 +131,12 @@ Tsumomo = function(server){
 	//Send message to channel or nick.
 	this.say = function(target,text){
 		self.tsumomo.say(target,text)
-		console.log("\x1b[46m","Tsumomo| "+text,"\x1b[0m");
+		console.log("Tsumomo| "+text);
 	};
 
 	this.pm = function(nick,text){
 		self.tsumomo.notice(nick,text);
-		console.log("\x1b[46m","->"+nick.substring(0,10)+"<-",text,"\x1b[0m");
+		console.log(nick.substring(0,10));
 	};
 
 	//Request to check user status; Queue nick and command.
@@ -156,6 +157,7 @@ Tsumomo = function(server){
 
 		}else{
 			//console.log(nick+" not identified.");
+			self.pm(nick,"（︶︿︶） I won't accept your commands unless your nick is registered （︶︿︶）")
 		}
 		delete self.Queue[nick];
 	};
@@ -167,7 +169,7 @@ Tsumomo = function(server){
 						CHAT COMMANDS
 		Defines actions which trigger on player input
 	*/
-	this.commands = ["!yen","!stats"];
+	this.commands = ["!yen","!stats","!fight","!mart","!shop","!reset","!rez","!test","!save"];
 
 	//Gives user random amount of yen.
 	this.yen = function(nick,target,text){
@@ -270,24 +272,28 @@ Tsumomo = function(server){
 	this.msgProcess = function(nick, target, text, message){
 		console.log(nick.substring(0,10)+"| "+text) //Display chat messages
 		
-		var command = text.split(" ");
+		var command = text.split(" ")[0].toLowerCase();
+
+		if (!(command in self.commands){
+			return false;
+		}
 
 		if(!self.Players){ //Handle messages upon savedata load error
-			if (command[0].toLowerCase() == "!save"){
+			if (command == "!save"){
 				self.Players = {};
 				self.save(true);
 			}
-			return undefined;
+			return false;
 		}
 
 		if (!(nick in self.Players)){
 			self.requestStatus(nick,target,text);
-			return undefined;
+			return false;
 		}
 
 		self.save();
 
-		switch(command[0].toLowerCase()){
+		switch(command){
 			case "!yen": self.yen(nick,target,text); break;
 			case "!test": self.test(nick,target,text); break;
 			case "!save": self.save(true); break;
@@ -297,7 +303,7 @@ Tsumomo = function(server){
 			case "!rez": self.rez(nick,target,text); break;
 		}
 
-		
+		return true;
 	}
 	this.tsumomo.addListener("message",this.msgProcess);
 	
