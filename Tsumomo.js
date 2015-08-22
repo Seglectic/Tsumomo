@@ -29,7 +29,7 @@ Tsumomo = function(server){
 	this.options = { 				//IRC configuration object
 		userName: "Tsumomo",
 		realName: "Tsumomo",
-		channels:["#momoLab"],
+		channels:["#momoLab","#e-hentai","#Fluffington"],
 		autoRejoin: true,
 	};
 	this.Players = {};
@@ -183,7 +183,7 @@ Tsumomo = function(server){
 			player.yenTime = yTime;
 		}
 
-		var yen = self.RNG(50,10000);
+		var yen = self.RNG(50,5000);
 		player.yen += yen;
 		var wallet = player.yen;
 		var display = self.cat("%s got ¥%s yen! You now have ¥%s!",nick,yen,wallet);
@@ -199,7 +199,7 @@ Tsumomo = function(server){
 			return;
 		}
 		var p = self.Players[nick];
-		var display = cat("%s | ¥%s | LVL %s [%s XP] | %s/%sHP %s STR %s DEF | Wearing %s | Wielding %s |",nick,p.yen,p.level,p.xp,p.hp,p.hpMax,p.str,p.def,p.armor.detail,p.weapon.detail);
+		var display = cat("%s | ¥%s | LVL %s [%s XP] | %s/%sHP %s STR %s DEF | Wearing %s [+%s] | Wielding %s [+%s]|",nick,p.yen,p.level,p.xp,p.hp,p.hpMax,p.str,p.def,p.armor.detail,p.armor.def,p.weapon.detail,p.weapon.dmg);
 		self.say(target,display);
 	};
 
