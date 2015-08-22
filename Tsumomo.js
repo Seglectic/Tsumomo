@@ -16,6 +16,8 @@ var irc = require('irc');
 var fs = require('fs');
 var fight = require('./fight');
 var mart = require('./mart');
+var items = require('./items');
+var mart = require('./mart');
 
 	//MAIN TSUMOMO OBJECT
 Tsumomo = function(server){
@@ -27,7 +29,7 @@ Tsumomo = function(server){
 	this.options = { 				//IRC configuration object
 		userName: "Tsumomo",
 		realName: "Tsumomo",
-		channels:["#momoLab"],
+		channels:["#momoLab","#Fluffington"],
 		autoRejoin: true,
 	};
 	this.Players = {};
@@ -111,8 +113,8 @@ Tsumomo = function(server){
 		this.def = 3;
 		this.hp = 15;
 		this.hpMax = this.hp;
-		this.wearing = {};
-		this.wielding = {};
+		this.armor = new items.starterWeapon() ;
+		this.weapon = new items.starterArmor() ;
 		this.inventory = [];
 		this.fiend = undefined;
 	}
@@ -181,7 +183,7 @@ Tsumomo = function(server){
 			player.yenTime = yTime;
 		}
 
-		var yen = self.RNG(1,20);
+		var yen = self.RNG(50,10000);
 		player.yen += yen;
 		var wallet = player.yen;
 		var display = self.cat("%s got ¥%s yen! You now have ¥%s!",nick,yen,wallet);
@@ -197,7 +199,7 @@ Tsumomo = function(server){
 			return;
 		}
 		var p = self.Players[nick];
-		var display = cat("%s | ¥%s | LVL %s [%s XP] | %s/%sHP %s STR %s DEF | Wielding: %s | Wearing: %s |",nick,p.yen,p.level,p.xp,p.hp,p.hpMax,p.str,p.def,p.wearing,p.wielding);
+		var display = cat("%s | ¥%s | LVL %s [%s XP] | %s/%sHP %s STR %s DEF | Wielding %s | Wearing %s |",nick,p.yen,p.level,p.xp,p.hp,p.hpMax,p.str,p.def,p.armor.detail,p.weapon.detail);
 		self.say(target,display);
 	};
 
@@ -210,7 +212,7 @@ Tsumomo = function(server){
 	//Resets a player's stats 
 	this.reset = function(nick,target,text){
 		text = text.split(" ");
-		if (text.length>1 & (nick =="Segger"|| nick=="mobiSegger")){nick=text[1];}
+		if (text.length>1 & (nick =="Segger"|| nick=="mobiSegger" || nick=="Seggr")){nick=text[1];}
 		if (!self.Players[nick]){self.say(target,"Couldn't find "+nick); return;}
 		self.Players[nick] = new this.player(nick);
 		self.say(target,nick+"'s stats were reset!!")

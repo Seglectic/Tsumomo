@@ -45,13 +45,13 @@ this.npc = function(self,target,player){
 
 	//Damage to enemy
 	var strikeChance = Math.random()+0.3;			 			//Player's hit percentage			
-	var pwr = Math.ceil(player.str*strikeChance)+player.level;	//Strike power scaling
+	var pwr = Math.ceil(player.str*strikeChance)+player.weapon.dmg;	//Strike power scaling
 	var pDmg = pwr-(fiend.def);
 
 	//Damage to player
 	var damageChance = Math.random()+0.2;			 			//Hit percentage			
 	var fPwr = Math.ceil(fiend.str*damageChance)+fiend.level;	//Strike power scaling
-	var fDmg = fPwr-(player.def);
+	var fDmg = fPwr-(player.def+player.armor.def);
 
 	//Display actions performed
 	var pDmgMsg =self.cat("%s deals %s DMG to the %s! ",player.nick,pDmg,fiend.detailName);

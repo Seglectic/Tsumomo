@@ -28,8 +28,8 @@ this.newFiend = function(pLvl){
 
 									//Slime
 this.slime = function(pLvl){
-	this.colors = ["red","blue","green","yellow","pink","purple"];
-	this.color = this.colors[RNG(0,this.colors.length-1)];
+	var colors = ["red","blue","green","yellow","pink","purple"];
+	this.color = colors[RNG(0,colors.length-1)];
 	this.name = "slime";
 	this.detailName = this.color+" slime";
 	this.detail = "Its "+this.color+", gelatinous body ripples as it bounces toward you.";
@@ -45,8 +45,8 @@ this.slime = function(pLvl){
 
 								//Jackal
 this.jackal = function(pLvl){
-	this.colors = ["brown","grey","spotted","black","white","tan"];
-	this.color = this.colors[RNG(0,this.colors.length-1)];
+	var colors = ["brown","grey","spotted","black","white","tan"];
+	this.color = colors[RNG(0,colors.length-1)];
 	this.name = "jackal";
 	this.detailName = this.color+" slime";
 	this.detail = "With wild eyes and a "+this.color+" coat of fur, it eyes you hungrily.";
