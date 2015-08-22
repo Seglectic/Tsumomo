@@ -157,7 +157,7 @@ Tsumomo = function(server){
 
 		}else{
 			//console.log(nick+" not identified.");
-			self.pm(nick,"（︶︿︶） I won't accept your commands unless your nick is registered （︶︿︶）")
+			self.pm(nick,"I only accept commands from registered nicks.  :P")
 		}
 		delete self.Queue[nick];
 	};
@@ -244,6 +244,7 @@ Tsumomo = function(server){
 			Defines callbacks for IRC events.
 	*/
 
+
 	//Runs upon connection to server.
 	this.connected = function(message){
 		console.log("Connection to "+self.server+" successful. Got message:")
@@ -252,12 +253,14 @@ Tsumomo = function(server){
 	}
 	this.tsumomo.addListener("registered",this.connected);
 
+
 	//Runs upon user connection to channel.
 	this.join = function(channel,nick,message){
 		//console.log("\nSuccessfully joined "+channel+"\n");
 		//self.say(channel,self.name+" "+self.version);
 	}
 	this.tsumomo.addListener("join",this.join)
+
 
 	//Runs when Tsumomo receives a notice.
 	this.noticed = function(nick,to,text,message){
@@ -268,13 +271,12 @@ Tsumomo = function(server){
 	}
 	this.tsumomo.addListener("notice",this.noticed);
 
+
 	//Handles incoming messages.
 	this.msgProcess = function(nick, target, text, message){
-		console.log(nick.substring(0,10)+"| "+text) //Display chat messages
-		
 		var command = text.split(" ")[0].toLowerCase();
-
-		if (!(command in self.commands){
+		
+		if (self.commands.indexOf(command)==-1){ //Skip if command unknown
 			return false;
 		}
 
@@ -286,12 +288,12 @@ Tsumomo = function(server){
 			return false;
 		}
 
-		if (!(nick in self.Players)){
+		if (!(nick in self.Players)){ //Check if player is known, else ID them
 			self.requestStatus(nick,target,text);
 			return false;
 		}
 
-		self.save();
+		console.log(nick.substring(0,10)+"| "+text) //Display chat messages
 
 		switch(command){
 			case "!yen": self.yen(nick,target,text); break;
@@ -303,6 +305,7 @@ Tsumomo = function(server){
 			case "!rez": self.rez(nick,target,text); break;
 		}
 
+		self.save();
 		return true;
 	}
 	this.tsumomo.addListener("message",this.msgProcess);
