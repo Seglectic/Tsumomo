@@ -12,6 +12,17 @@
 */
 
 
+/*
+	TODO
+Set up !rest so that it heals 25% health per hour for players
+
+Give players a flag that tells whether or not they're out of commision:
+	aka, when dead, resting, fishing, whatever
+
+Give new player prototype ability to feed defaults so players can be
+instantiated with new stats without clearing save data.
+*/
+
 var irc = require('irc');
 var fs = require('fs');
 var fight = require('./fight');
@@ -96,8 +107,8 @@ Tsumomo = function(server){
 	    );
 	};
 
-	//New player prototype, accepts object for defaults [['key',value]...]
-	this.player = function(nick,defaults){
+	//New player prototype, accepts player object for defaults...]
+	this.player = function(nick,default){
 		this.nick = nick;
 		this.yen = 0;
 		this.yenTime = new Date(2015,1,1,1,1,1,1).getTime();
@@ -229,6 +240,14 @@ Tsumomo = function(server){
 		self.say(target,nick+" was brought back to life!");
 		Players[nick].hp = Players[nick].hpMax;
 	};
+
+
+	//Rest for X hours, + 20% hp per hour, can't yen or fight
+	this.rest = function(nick,target,text){
+		text = text.split(" ");
+		self.say("")
+
+	}
 
 
 
