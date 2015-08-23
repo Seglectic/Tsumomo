@@ -1,4 +1,4 @@
-	/*
+/*
 						TSUMOMO IRC BOT
 
 		Tsumomo is an IRC chat bot designed as a operator  for
@@ -9,7 +9,7 @@
 		communication. IRC API available at: https://goo.gl/w9rsns
 		
 		-Segger 2015
-	*/
+*/
 
 
 var irc = require('irc');
@@ -25,7 +25,7 @@ Tsumomo = function(server){
 	
 	var self = this; 				//Gives local context reference to events
 	this.version = "0.7";
-	this.name= "Tsumomo";	//Nick
+	this.name= "Tsumomo[BETA]";	//Nick
 	this.options = { 				//IRC configuration object
 		userName: "Tsumomo",
 		realName: "Tsumomo",
@@ -96,13 +96,7 @@ Tsumomo = function(server){
 	    );
 	};
 
-	//Returns the current time [ALPHA]
-	this.now = function(){
-		var time = new Date();
-		return time;		
-	}
-
-		//New player prototype, accepts object for defaults [['key',value]...]
+	//New player prototype, accepts object for defaults [['key',value]...]
 	this.player = function(nick,defaults){
 		this.nick = nick;
 		this.yen = 0;
@@ -180,7 +174,6 @@ Tsumomo = function(server){
 			self.say(target, deathmsg); 
 			return false;
 		}
-
 
 		if(new Date().getTime() < player.yenTime){
 			var remaining = player.yenTime- new Date().getTime();
@@ -311,6 +304,7 @@ Tsumomo = function(server){
 			case "!fight": self.fight(nick,target,text); break;
 			case "!reset": self.reset(nick,target,text); break;
 			case "!rez": self.rez(nick,target,text); break;
+			case "!mart" || "!shop": mart.greet(self,nick,target,text); break;
 		}
 
 		self.save();

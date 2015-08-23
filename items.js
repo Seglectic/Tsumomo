@@ -26,7 +26,7 @@ this.starterWeapon = function(){
 
 this.starterArmor = function(){
 	var names = ['fundoshi','loincloth','underwear','pantsu','tablecloth','barrel'];
-	var details = ['a sweaty fundoshi','a damp loincloth','a pair of rubber underwear','some kawaii pantsu','a dirty tablecloth','an oak barrel'];
+	var details = ['a sweaty fundoshi','a damp loincloth','a pair of rubber underwear','some kawaii pantsu','a thin, dirty, tablecloth','an oak barrel'];
 	var chance = Math.floor( Math.random() * (names.length) ) //Random starter choice
 	this.def = 1;
 	this.value = 0;
@@ -37,50 +37,54 @@ this.starterArmor = function(){
 
 
 
-
 	/*
 					WEAPONS
 		Adds power to attacks in the field
 	*/
 
-var Weapons = {
-
-	rustySpoon:{
-		dmg:2,
-		value:3000,
-		name: "Rusty Spoon",
-		detail:"an old rusty spoon",
+this.lowWeapons = [
+	this.rustySpoon = function(){
+		this.dmg = 2
+		this.value = 30000
+		this.name = "Rusty Spoon"
+		this.detail ="an old rusty spoon"
 	},
 
-	spoon:{
-		dmg:3,
-		value:4300,
-		name: "Spoon",
-		detail:"a spoon",
+	this.spoon = function(){
+		this.dmg = 3
+		this.value = 43000
+		this.name = "Spoon"
+		this.detail ="a spoon"
+	}
+]
+
+this.midWeapons = [
+
+	this.shinySpoon = function(){
+		this.dmg=4
+		this.value=50000
+		this.name= "Shiny Spoon"
+		this.detail="a spoon of pure platinum"
 	},
 
-	shinySpoon:{
-		dmg:4,
-		value:5000,
-		name: "Shiny Spoon",
-		detail:"a spoon of pure platinum",
-	},
+	this.brokenSword = function(){
+		this.dmg=5
+		this.value=100000
+		this.name= "Broken Sword"
+		this.detail="a sword with its point broken off"
+	}
+]
 
-	brokenSword:{
-		dmg:5,
-		value:10000,
-		name: "Broken Sword",
-		detail:"a sword with its point broken off",
-	},
+this.hiWeapons = [
 
-	cutlass:{
-		dmg:8,
-		value:25000,
-		name: "Cutlass",
-		detail:"a shiny new cutlass",
-	},
+	this.cutlass = function(){
+		this.dmg=8
+		this.value=250000
+		this.name= "Cutlass"
+		this.detail="a sharp cutlass"
+	}
 
-}
+]
 
 
 	/*
@@ -88,16 +92,55 @@ var Weapons = {
 		Adds defense from attacks in the field
 	*/
 
-var Armors = {
 
-	plainClothes:{
-		def:1,
-		value:8000,
-		name: "Plain Clothes",
-		detail:"a pair of jeans and a T-shirt",
+this.lowArmor = [
+
+	this.plainClothes = function(){
+		this.def=2
+		this.value=80000
+		this.name= "Plain Clothes"
+		this.detail="a pair of jeans and a T-shirt"
 	},
 
-}
+	this.leatherArmor = function(){
+		this.def = 6;
+		this.value = 100000;
+		this.name = "Leather Armor";
+		this.detail = "A hardened leather suit of armor" 
+	}
+
+
+]
+
+this.midArmor = [
+	
+	this.steelCuirass = function(){
+		this.def = 6;
+		this.value = 100000;
+		this.name = "Steel Cuirass";
+		this.detail = "A rigid breastplate of steel";
+	},
+
+
+]
+
+this.hiArmor = [
+	
+	this.swatUniform = function(){
+		this.def = 15;
+		this.value = 300000;
+		this.name = "Swat Uniform";
+		this.detail = "A set of special forces tactical gear";
+	},
+
+]
+
+
+
+
+
+
+
 
 
 /*'fists',1,0],['Rusty Spoon',2,3000],['Shiny Spoon',4,5000],['Rusty Dagger',5,10000],['Sword',7,20000]]
