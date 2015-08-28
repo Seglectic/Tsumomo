@@ -60,8 +60,8 @@ this.stock = function(){
 		this.consumables.push(randItem)
 	}*/
 
-	//this.consumables.push(new items.consumable[0]() );
-	//this.consumables.push(new items.consumable[1]() );
+	this.consumables.push(new items.consumable[0]() );
+	this.consumables.push(new items.consumable[1]() );
 
 };
 
@@ -107,6 +107,7 @@ this.shop = function(self,nick,target,text){
 	};
 
 	if (type=="items"){
+		return false;//SKIP TILL I CAN FIX THIS SHIT
 		var display = "| "
 		for (var x = 0 ; x >= i.consumables.length; x++) {
 			c = i.consumables[x];
