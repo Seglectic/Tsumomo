@@ -1,5 +1,5 @@
 /*
-						TSUMOMO IRC BOT
+						❤ TSUMOMO IRC BOT ❤
 
 		Tsumomo is an IRC chat bot designed as a operator  for
 		a  text-based  MMORPG  with an IRC interface written in
@@ -15,6 +15,9 @@
 /*
 	TODO
 Set up !rest so that it heals 25% health per hour for players
+
+!fortune for P3 clone of yen losee etc
+
 
 Give players a flag that tells whether or not they're out of commision:
 	aka, when dead, resting, fishing, whatever
@@ -108,7 +111,7 @@ Tsumomo = function(server){
 	};
 
 	//New player prototype, accepts player object for defaults...]
-	this.player = function(nick,default){
+	this.player = function(nick,player){
 		this.nick = nick;
 		this.yen = 0;
 		this.yenTime = new Date(2015,1,1,1,1,1,1).getTime();
@@ -141,7 +144,7 @@ Tsumomo = function(server){
 
 	this.pm = function(nick,text){
 		self.tsumomo.notice(nick,text);
-		console.log(nick.substring(0,10));
+		console.log("-PM ",nick.substring(0,10)+"- "+text);
 	};
 
 	//Request to check user status; Queue nick and command.
@@ -174,7 +177,6 @@ Tsumomo = function(server){
 						CHAT COMMANDS
 		Defines actions which trigger on player input
 	*/
-	this.commands = ["!yen","!stats","!fight","!mart","!shop","!reset","!rez","!test","!save"];
 
 	//Gives user random amount of yen.
 	this.yen = function(nick,target,text){
@@ -291,8 +293,9 @@ Tsumomo = function(server){
 	}
 	this.tsumomo.addListener("notice",this.noticed);
 
-
+	
 	//Handles incoming messages.
+	this.commands = ["!buy","!yen","!stats","!fight","!mart","!weapons","!armor","!shop","!reset","!rez","!test","!save"];
 	this.msgProcess = function(nick, target, text, message){
 		var command = text.split(" ")[0].toLowerCase();
 		
@@ -311,7 +314,7 @@ Tsumomo = function(server){
 		if (!(nick in self.Players)){ //Check if player is known, else ID them
 			self.requestStatus(nick,target,text);
 			return false;
-		}
+		}		
 
 		console.log(nick.substring(0,10)+"| "+text) //Display chat messages
 
@@ -323,7 +326,9 @@ Tsumomo = function(server){
 			case "!fight": self.fight(nick,target,text); break;
 			case "!reset": self.reset(nick,target,text); break;
 			case "!rez": self.rez(nick,target,text); break;
-			case "!mart" || "!shop": mart.greet(self,nick,target,text); break;
+			case "!mart": mart.greet(self,nick,target,text); break;
+			case "!shop": mart.shop(self,nick,target,text); break;
+			case "!buy": mart.buy(self,nick,target,text); break;
 		}
 
 		self.save();
@@ -335,9 +340,11 @@ Tsumomo = function(server){
 	this.handleError = function(message){
 		 console.log('Error: ', message)
 	}
+	this.tsumomo.addListener("error",this.handleError);
 
 }
 
 process.stdout.write('\033c'); //Clear screen
 
 Tsumomo()
+

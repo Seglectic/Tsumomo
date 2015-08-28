@@ -43,18 +43,18 @@ this.starterArmor = function(){
 	*/
 
 this.lowWeapons = [
-	this.rustySpoon = function(){
+	this.rustyFork = function(){
 		this.dmg = 2
-		this.value = 30000
-		this.name = "Rusty Spoon"
-		this.detail ="an old rusty spoon"
+		this.value = 20000
+		this.name = "Rusty Fork"
+		this.detail ="an old rusty fork"
 	},
 
-	this.spoon = function(){
+	this.fork = function(){
 		this.dmg = 3
 		this.value = 43000
-		this.name = "Spoon"
-		this.detail ="a spoon"
+		this.name = "Fork"
+		this.detail ="a fork"
 	}
 ]
 
@@ -78,11 +78,32 @@ this.midWeapons = [
 this.hiWeapons = [
 
 	this.cutlass = function(){
-		this.dmg=8
-		this.value=250000
 		this.name= "Cutlass"
+		this.value=250000
+		this.dmg=8
 		this.detail="a sharp cutlass"
 	}
+
+]
+
+
+
+//Consumable items
+this.consumable = [
+
+	this.potion = function(){
+		this.name= "Potion";
+		this.value=9000;
+		this.detail="a bottle of healing elixer";
+	},
+
+	this.revive = function(){
+		this.name = "Revival Bead";
+		this.value = 15000;
+		this.detail = "a small orb for returning souls to　their bodies"
+	}
+
+
 
 ]
 
@@ -97,28 +118,26 @@ this.lowArmor = [
 
 	this.plainClothes = function(){
 		this.def=2
-		this.value=80000
+		this.value=5000
 		this.name= "Plain Clothes"
 		this.detail="a pair of jeans and a T-shirt"
 	},
 
 	this.leatherArmor = function(){
 		this.def = 6;
-		this.value = 100000;
+		this.value = 10000;
 		this.name = "Leather Armor";
-		this.detail = "A hardened leather suit of armor" 
+		this.detail = " hardened leather armor" 
 	}
-
-
 ]
 
 this.midArmor = [
-	
+
 	this.steelCuirass = function(){
 		this.def = 6;
 		this.value = 100000;
 		this.name = "Steel Cuirass";
-		this.detail = "A rigid breastplate of steel";
+		this.detail = "a breastplate forged from rigid steel";
 	},
 
 
@@ -138,12 +157,5 @@ this.hiArmor = [
 
 
 
-
-
-
-
-
-/*'fists',1,0],['Rusty Spoon',2,3000],['Shiny Spoon',4,5000],['Rusty Dagger',5,10000],['Sword',7,20000]]
-Armors = [['nothing',0,0],['Plain Clothes',3,8000],['Chainmail Garb',30,99999],['Torn Shirt',1,2000]]*/
 
 

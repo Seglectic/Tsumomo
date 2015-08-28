@@ -45,11 +45,13 @@ this.npc = function(self,target,player){
 
 
 	if (!player.fiend || player.fiend.hp<=0){						//Is fiend dead?
-		player.fiend = new fiends.slime();
+		if (player.level < 10){player.fiend = fiends.slime();}
+		if (player.level >= 10){player.fiend = fiends.jackal();}
+	
+		fiend = player.fiend;
 		self.pm(player.nick,player.fiend.encounter);
 	}
 
-	fiend = player.fiend;
 
 	//Damage to enemy
 	var strikeChance = Math.random()+0.3;			 				//Player's hit percentage			
