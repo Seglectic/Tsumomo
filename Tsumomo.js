@@ -87,9 +87,16 @@ Tsumomo = function(server){
 					data = JSON.parse(dataString);
 					self.Players = data.Players;
 					self.momoMart = data.momoMart;
+
+					//Iterate through players for debugging purposes.
+					for (var nick in self.Players) {
+						//Do whatever
+					};
+
 				}
 			}
 		);
+
 	}
 	this.load();
 
