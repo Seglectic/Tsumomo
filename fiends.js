@@ -48,11 +48,12 @@ this.jackal = function(pLvl){
 	var colors = ["brown","grey","spotted","black","white","tan"];
 	this.color = colors[RNG(0,colors.length-1)];
 	this.name = "jackal";
-	this.detailName = this.color+" slime";
+	this.detailName = this.color+" jackal";
 	this.detail = "With wild eyes and a "+this.color+" coat of fur, it eyes you hungrily.";
 	this.encounter = "A wild jackal approaches! "+this.detail;
 	this.hp = 40;
 	this.str = 12;
 	this.def = 15;
 	this.level = pLvl+(RNG());
+	this.xp = RNG(12,18);
 }
