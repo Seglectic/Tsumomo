@@ -33,6 +33,8 @@ var mart = require('./mart');
 var items = require('./items');
 var mart = require('./mart');
 
+var fiend = require('./fiends');
+
 	//MAIN TSUMOMO OBJECT
 Tsumomo = function(server){
 	if (!server){this.server="irc.rizon.net";} else{this.server= server;}
@@ -43,8 +45,8 @@ Tsumomo = function(server){
 	this.options = { 				//IRC configuration object
 		userName: "Tsumomo",
 		realName: "Tsumomo",
-		//channels:["#momoLab","#e-hentai","#Fluffington"],
-		channels:["#momoLab"],
+		channels:["#momoLab","#Fluffington"],
+		//channels:["#momoLab"],
 		autoRejoin: true,
 	};
 	this.Players = {};
@@ -90,7 +92,11 @@ Tsumomo = function(server){
 
 					//Iterate through players for debugging purposes.
 					for (var nick in self.Players) {
-						//Do whatever
+						p = self.Players[nick];
+						if (p.hp == null){
+							p.hp = p.hpMax;
+							p.fiend = new fiend.jackal();
+						}
 					};
 
 				}
