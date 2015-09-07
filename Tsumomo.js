@@ -18,7 +18,6 @@ Set up !rest so that it heals 25% health per hour for players
 
 !fortune for P3 clone of yen losee etc
 
-
 Give players a flag that tells whether or not they're out of commision:
 	aka, when dead, resting, fishing, whatever
 
@@ -40,13 +39,13 @@ Tsumomo = function(server){
 	if (!server){this.server="irc.rizon.net";} else{this.server= server;}
 	
 	var self = this; 				//Gives local context reference to events
-	this.version = "0.7";
-	this.name= "Tsumomo[BETA]";	//Nick
+	this.version = "0.9.1";
+	this.name= "Tsumomo";			//Nick
 	this.options = { 				//IRC configuration object
 		userName: "Tsumomo",
 		realName: "Tsumomo",
-		//channels:["#momoLab","#Fluffington"],
-		channels:["#momoLab"],
+		channels:["#momoLab","#Fluffington"],
+		//channels:["#momoLab"],
 		autoRejoin: true,
 	};
 	this.Players = {};
@@ -248,17 +247,12 @@ Tsumomo = function(server){
 		self.say(target,nick+"'s stats were reset!!")
 	};
 
-	this.rez = function(nick,target,text){
-		//self.say(target,nick+" was brought back to life!");
-		//Players[nick].hp = Players[nick].hpMax;
-	};
-
-
 	//Rest for X hours, + 20% hp per hour, can't yen or fight
 	this.rest = function(nick,target,text){
 
 	}
 
+	//Check your own inventory
 	this.inventory = function(self,nick,target,text){
 		txt = text.split(" ");
 		if (txt.length>1){nick = txt[1];}
@@ -275,13 +269,13 @@ Tsumomo = function(server){
 		self.say(target,display);
 	}
 
+	//Uses a potion to heal yourself
 	this.potion = function(self,nick,target,text){
 		p = self.Players[nick];
 		var potionGet = false;
 		for (var i = 0 ; i < p.inventory.length; i++) {
 			if (p.inventory[i].name == "Potion"){
 				potionGet = i;
-				console.log(i)
 				break;
 			}
 		};
@@ -297,6 +291,33 @@ Tsumomo = function(server){
 		self.say(target,nick+" drank a potion and restored 100 health!");
 
 	}
+
+	//Use a revival bead on a player to bring them back to life.
+	this.rez = function(nick,target,text){
+		if (text.split(" ").length>1){targ=text.split(" ")[1]} // 'targ' = revival recipient
+			else{
+				self.pm(nick,"Usage: '!rez [nick]'")
+				return;
+			}
+		if (!self.Players[targ]) {self.say(target,"Couldn't find "+targ); return;};
+		if (self.Players[targ].hp>0){self.say(target,targ+" doesn't need resurrection!"); return;}
+		p = self.Players[nick];
+		t = self.Players[targ];
+		var beadGet = false;
+		for (var i = 0 ; i < p.inventory.length; i++) {
+			if (p.inventory[i].name == "Revival Bead"){
+				beadGet = i;
+				break;
+			}
+		};
+		if (beadGet===false){
+			self.say(target, nick+", you don't have any revival beads! >_<");
+			return;
+		}
+		p.inventory.splice(beadGet,1)
+		t.hp = t.hpMax;
+		self.say(target,p.nick+" brought "+t.nick+" back from the dead! ^-^")
+	};
 
 
 
