@@ -45,8 +45,8 @@ Tsumomo = function(server){
 	this.options = { 				//IRC configuration object
 		userName: "Tsumomo",
 		realName: "Tsumomo",
-		channels:["#momoLab","#Fluffington"],
-		//channels:["#momoLab"],
+		//channels:["#momoLab","#Fluffington"],
+		channels:["#momoLab"],
 		autoRejoin: true,
 	};
 	this.Players = {};
@@ -93,10 +93,7 @@ Tsumomo = function(server){
 					//Iterate through players for debugging purposes.
 					for (var nick in self.Players) {
 						p = self.Players[nick];
-						if (p.hp == null){
-							p.hp = p.hpMax;
-							p.fiend = new fiend.jackal();
-						}
+						if (p.hp == 0){console.log("lol, "+p.nick+" is dead!")}
 					};
 
 				}
@@ -252,15 +249,52 @@ Tsumomo = function(server){
 	};
 
 	this.rez = function(nick,target,text){
-		self.say(target,nick+" was brought back to life!");
-		Players[nick].hp = Players[nick].hpMax;
+		//self.say(target,nick+" was brought back to life!");
+		//Players[nick].hp = Players[nick].hpMax;
 	};
 
 
 	//Rest for X hours, + 20% hp per hour, can't yen or fight
 	this.rest = function(nick,target,text){
-		text = text.split(" ");
-		self.say("")
+
+	}
+
+	this.inventory = function(self,nick,target,text){
+		txt = text.split(" ");
+		if (txt.length>1){nick = txt[1];}
+		if (!self.Players[nick]){ self.say(target,"Couldn't find "+nick); return;}
+
+		inv = self.Players[nick].inventory
+		if (inv.length == 0){self.say(target,nick+" doesn't own any items! >_<"); return; }
+		
+		var items = " ";
+		for (var i = 0; i < inv.length; i++) {
+			items+= inv[i].name+" | ";
+		};
+		var display = self.cat("%s posseses:%s",nick,items);
+		self.say(target,display);
+	}
+
+	this.potion = function(self,nick,target,text){
+		p = self.Players[nick];
+		var potionGet = false;
+		for (var i = 0 ; i < p.inventory.length; i++) {
+			if (p.inventory[i].name == "Potion"){
+				potionGet = i;
+				console.log(i)
+				break;
+			}
+		};
+
+		if (potionGet===false){
+			self.say(target, nick+", you don't have any potions!");
+			return;
+		}
+
+		p.inventory.splice(potionGet,1);
+		p.hp += 100;
+		if (p.hp>p.hpMax){p.hp=p.hpMax;}
+		self.say(target,nick+" drank a potion and restored 100 health!");
 
 	}
 
@@ -308,7 +342,7 @@ Tsumomo = function(server){
 
 	
 	//Handles incoming messages.
-	this.commands = ["!buy","!yen","!stats","!fight","!mart","!weapons","!armor","!shop","!reset","!rez","!test","!save"];
+	this.commands = ["!buy","!yen","!stats","!fight","!mart","!weapons","!armor","!shop","!reset","!rez","!test","!save","!inventory","!potion"];
 	this.msgProcess = function(nick, target, text, message){
 		var command = text.split(" ")[0].toLowerCase();
 		
@@ -342,6 +376,8 @@ Tsumomo = function(server){
 			case "!mart": mart.greet(self,nick,target,text); break;
 			case "!shop": mart.shop(self,nick,target,text); break;
 			case "!buy": mart.buy(self,nick,target,text); break;
+			case "!inventory": self.inventory(self,nick,target,text); break;
+			case "!potion": self.potion(self,nick,target,text); break;
 		}
 
 		self.save();
@@ -360,4 +396,3 @@ Tsumomo = function(server){
 process.stdout.write('\033c'); //Clear screen
 
 Tsumomo()
-

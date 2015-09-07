@@ -107,14 +107,12 @@ this.shop = function(self,nick,target,text){
 	};
 
 	if (type=="items"){
-		return false;//SKIP TILL I CAN FIX THIS SHIT
 		var display = "| "
-		for (var x = 0 ; x >= i.consumables.length; x++) {
+		for (var x = 0 ; x < i.consumables.length; x++) {
 			c = i.consumables[x];
-			var detail = self.cat(" #%s %s ¥%s |",x,c.name,c.value);
+			var detail = self.cat("#%s %s ¥%s |",x+1,c.name,c.value);
 			display += detail;
 		};
-		display+="| "
 		self.say(target,display);
 	}
 }
@@ -131,7 +129,7 @@ this.buy = function(self,nick,target,text){
 	if (param.length < 3){ error(); return false; }
 	//Check if param 2 is valid
 	var type = (param[1]); 
-	if ( ["weapons","weapon","armor"].indexOf(type) == -1 ){ error(); return false;}
+	if ( ['weapons','weapon','armor','armors','item','items'].indexOf(type) == -1 ){ error(); return false;}
 	//Make sure it's a number
 	var num = (param[2]);
 	if (isNaN(num)){ error(); return false;	}
@@ -197,5 +195,20 @@ this.buy = function(self,nick,target,text){
 		}	
 	}
 
+	if (type=="item" || type =="items"){
+		if (num<=items.consumable.length & num>0){
+			var item = new items.consumable[num-1]();
+			
+			if (p.yen<item.value){self.pm(nick,"You can't afford that!!");return;}
+			
+			p.yen -= item.value;
 
+			if (p.inventory.length<10){p.inventory.push(item)}
+				else{self.pm(nick,nick+", your inventory is full!");}
+
+			display = self.cat("%s bought a %s! ^-^",nick,item.name)
+			self.say(target,display);
+		}
+
+	}
 }
