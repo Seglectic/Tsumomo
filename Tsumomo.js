@@ -294,14 +294,12 @@ Tsumomo = function(server){
 
 	//Use a revival bead on a player to bring them back to life.
 	this.rez = function(nick,target,text){
-		if (text.split(" ").length>1){targ=text.split(" ")[1]} // 'targ' = revival recipient
-			else{
-				self.pm(nick,"Usage: '!rez [nick]'")
-				return;
-			}
-		if (!self.Players[targ]) {self.say(target,"Couldn't find "+targ); return;};
-		if (self.Players[targ].hp>0){self.say(target,targ+" doesn't need resurrection!"); return;}
 		p = self.Players[nick];
+		if (p.hp<=0){self.say(target,"The dead can't use revival beads!");return;}	// Deny if user is dead
+		if (text.split(" ").length>1){targ=text.split(" ")[1]} 						// 'targ' = revival recipient nick
+			else{self.pm(nick,"Usage: '!rez [nick]'")return;}
+		if (!self.Players[targ]) {self.say(target,"Couldn't find "+targ); return;}; //Check if targ is valid
+		if (self.Players[targ].hp>0){self.say(target,targ+" doesn't need resurrection!"); return;}
 		t = self.Players[targ];
 		var beadGet = false;
 		for (var i = 0 ; i < p.inventory.length; i++) {
