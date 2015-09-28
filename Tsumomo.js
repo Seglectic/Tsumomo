@@ -297,7 +297,7 @@ Tsumomo = function(server){
 		p = self.Players[nick];
 		if (p.hp<=0){self.say(target,"The dead can't use revival beads!");return;}	// Deny if user is dead
 		if (text.split(" ").length>1){targ=text.split(" ")[1]} 						// 'targ' = revival recipient nick
-			else{self.pm(nick,"Usage: '!rez [nick]'")return;}
+			else{self.pm(nick,"Usage: '!rez [nick]'");return;}
 		if (!self.Players[targ]) {self.say(target,"Couldn't find "+targ); return;}; //Check if targ is valid
 		if (self.Players[targ].hp>0){self.say(target,targ+" doesn't need resurrection!"); return;}
 		t = self.Players[targ];
