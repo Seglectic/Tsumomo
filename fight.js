@@ -47,6 +47,7 @@ this.npc = function(self,target,player){
 	if (!player.fiend || player.fiend.hp<=0){						//Is fiend dead?
 		if (player.level < 10){player.fiend = new fiends.slime();}
 		if (player.level >= 10){player.fiend = new fiends.jackal();}
+		if (player.level >= 20){player.fiend = new fiends.snail();}
 		self.pm(player.nick,player.fiend.encounter);
 	}
 

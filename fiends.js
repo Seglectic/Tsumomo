@@ -57,3 +57,19 @@ this.jackal = function(pLvl){
 	this.level = 7;
 	this.xp = RNG(12,18);
 }
+
+
+								//Snail
+this.snail = function(pLvl){
+	var colors = ["brown","blue","dark green","gold","mega","disgruntled"];
+	this.color = colors[RNG(0,colors.length-1)];
+	this.name = "snail";
+	this.detailName = this.color+" snail";
+	this.detail = "Its "+this.color+" shell looks hella intense!";
+	this.encounter = "A crazy insane wild snail approaches! "+this.detail;
+	this.hp = 300+RNG(0,50);
+	this.str = 50;
+	this.def = 90;
+	this.level = 20;
+	this.xp = RNG(15,20);
+}
