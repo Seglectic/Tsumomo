@@ -61,15 +61,30 @@ this.jackal = function(pLvl){
 
 								//Snail
 this.snail = function(pLvl){
-	var colors = ["brown","blue","dark green","gold","mega","disgruntled"];
+	var colors = ["brown","opal","dark green","gold","mega","disgruntled","stealth"];
 	this.color = colors[RNG(0,colors.length-1)];
 	this.name = "snail";
 	this.detailName = this.color+" snail";
-	this.detail = "Its "+this.color+" shell looks hella intense!";
-	this.encounter = "A crazy insane wild snail approaches! "+this.detail;
+	this.detail = "Its "+this.color+" shell has quite the defense!";
+	this.encounter = "A big ass wild snail approaches! "+this.detail;
 	this.hp = 300+RNG(0,50);
 	this.str = 50;
 	this.def = 90;
+	this.level = 20;
+	this.xp = RNG(15,20);
+}
+
+								//Boblin
+this.boblin = function(pLvl){
+	var colors = ["fat","ugly","sinister","undead","goblin","sick","putrid","skinny","rude","hairy","jacked"];
+	this.color = colors[RNG(0,colors.length-1)];
+	this.name = "boblin";
+	this.detailName = this.color+" snail";
+	this.detail = "All you know besides his name is that he's quite "+this.color+" looking!";
+	this.encounter = "A man named Bob draws near! "+this.detail;
+	this.hp = 300+RNG(0,50);
+	this.str = 90;
+	this.def = 50;
 	this.level = 20;
 	this.xp = RNG(15,20);
 }

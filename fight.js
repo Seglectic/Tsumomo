@@ -47,7 +47,13 @@ this.npc = function(self,target,player){
 	if (!player.fiend || player.fiend.hp<=0){						//Is fiend dead?
 		if (player.level < 10){player.fiend = new fiends.slime();}
 		if (player.level >= 10){player.fiend = new fiends.jackal();}
-		if (player.level >= 20){player.fiend = new fiends.snail();}
+		if (player.level >= 20){
+			var who = Math.random()
+			if(who>0.8){player.fiend = new fiends.snail();}
+			else{player.fiend = new fiends.boblin();}
+		}
+			
+
 		self.pm(player.nick,player.fiend.encounter);
 	}
 
@@ -68,7 +74,7 @@ this.npc = function(self,target,player){
 	var fDmgMsg = self.cat("The %s hits you for %s DMG!!",fiend.name,fDmg);
 	if (pDmg<=0){
 		pDmg=0;
-		pDmgMsg = cat("%s missed the %s! ",player.name,fiend.detailName);
+		pDmgMsg = cat("%s missed the %s! ",player.nick,fiend.detailName);
 	}
 	if (fDmg<=0){
 		fDmg=0;
