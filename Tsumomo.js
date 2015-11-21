@@ -14,8 +14,6 @@
 
 /*
 	TODO
-Set up !rest so that it heals 25% health per hour for players
-
 !fortune for P3 clone of yen losee etc
 
 Give players a flag that tells whether or not they're out of commision:
@@ -31,6 +29,8 @@ var fight = require('./fight');
 var mart = require('./mart');
 var items = require('./items');
 var mart = require('./mart');
+var inv = require('./inventory');
+var yen = require('./yen');
 
 var fiend = require('./fiends');
 
@@ -39,12 +39,12 @@ Tsumomo = function(server){
 	if (!server){this.server="irc.rizon.net";} else{this.server= server;}
 	
 	var self = this; 				//Gives local context reference to events
-	this.version = "0.9.1";
+	this.version = "0.9.4";
 	this.name= "Tsumomo";			//Nick
 	this.options = { 				//IRC configuration object
 		userName: "Tsumomo",
 		realName: "Tsumomo",
-		channels:["#momoLab","#Fluffington"],
+		channels:["#momoLab"],
 		//channels:["#momoLab"],
 		autoRejoin: true,
 	};
@@ -151,6 +151,7 @@ Tsumomo = function(server){
 		console.log("Tsumomo| "+text);
 	};
 
+	//Send a message directly to player, not actually a 
 	this.pm = function(nick,text){
 		self.tsumomo.notice(nick,text);
 		console.log("-PM ",nick.substring(0,10)+"- "+text);
@@ -187,33 +188,6 @@ Tsumomo = function(server){
 		Defines actions which trigger on player input
 	*/
 
-	//Gives user random amount of yen.
-	this.yen = function(nick,target,text){
-		var player = self.Players[nick]
-
-		if (player.hp<=0){ 												//Is player dead?
-			deathmsg = self.cat("%s, dead bodies cannot take yen. ;-;",player.nick);
-			self.say(target, deathmsg); 
-			return false;
-		}
-
-		if(new Date().getTime() < player.yenTime){
-			var remaining = player.yenTime- new Date().getTime();
-			remaining = Math.ceil(remaining/60000)
-			self.pm(player.nick,"You can collect more yen in "+remaining+" minutes! ^-^");
-			return false;
-		}else{
-			var min = 30; //30 minutes till next fight
-			var yTime = new Date().getTime() + (min*60000) ;
-			player.yenTime = yTime;
-		}
-
-		var yen = self.RNG(50,5000);
-		player.yen += yen;
-		var wallet = player.yen;
-		var display = self.cat("%s got ¥%s yen! You now have ¥%s!",nick,yen,wallet);
-		self.say(target,display);
-	};
 
 	//Display user information
 	this.stats = function(nick,target,text){
@@ -238,90 +212,21 @@ Tsumomo = function(server){
 		fight.npc(self,target,Players[nick]);
 	};
 
-	//Resets a player's stats 
+	/*Resets a player's stats, commented due to potential vulnerability
 	this.reset = function(nick,target,text){
 		text = text.split(" ");
 		if (text.length>1 & (nick =="Segger"|| nick=="mobiSegger" || nick=="Seggr")){nick=text[1];}
 		if (!self.Players[nick]){self.say(target,"Couldn't find "+nick); return;}
 		self.Players[nick] = new this.player(nick);
 		self.say(target,nick+"'s stats were reset!!")
-	};
+	};*/
 
-	//Rest for X hours, + 20% hp per hour, can't yen or fight
-	this.rest = function(nick,target,text){
-
-	}
-
-	//Check your own inventory
-	this.inventory = function(self,nick,target,text){
-		txt = text.split(" ");
-		if (txt.length>1){nick = txt[1];}
-		if (!self.Players[nick]){ self.say(target,"Couldn't find "+nick); return;}
-
-		inv = self.Players[nick].inventory
-		if (inv.length == 0){self.say(target,nick+" doesn't own any items! >_<"); return; }
-		
-		var items = " ";
-		for (var i = 0; i < inv.length; i++) {
-			items+= inv[i].name+" | ";
-		};
-		var display = self.cat("%s posseses:%s",nick,items);
-		self.say(target,display);
-	}
-
-	//Uses a potion to heal yourself
-	this.potion = function(self,nick,target,text){
-		p = self.Players[nick];
-		var potionGet = false;
-		for (var i = 0 ; i < p.inventory.length; i++) {
-			if (p.inventory[i].name == "Potion"){
-				potionGet = i;
-				break;
-			}
-		};
-
-		if (potionGet===false){
-			self.say(target, nick+", you don't have any potions!");
-			return;
-		}
-
-		p.inventory.splice(potionGet,1);
-		p.hp += 100;
-		if (p.hp>p.hpMax){p.hp=p.hpMax;}
-		self.say(target,nick+" drank a potion and restored 100 health!");
-
-	}
-
-	//Use a revival bead on a player to bring them back to life.
-	this.rez = function(nick,target,text){
-		p = self.Players[nick];
-		if (p.hp<=0){self.say(target,"The dead can't use revival beads!");return;}	// Deny if user is dead
-		if (text.split(" ").length>1){targ=text.split(" ")[1]} 						// 'targ' = revival recipient nick
-			else{self.pm(nick,"Usage: '!rez [nick]'");return;}
-		if (!self.Players[targ]) {self.say(target,"Couldn't find "+targ); return;}; //Check if targ is valid
-		if (self.Players[targ].hp>0){self.say(target,targ+" doesn't need resurrection!"); return;}
-		t = self.Players[targ];
-		var beadGet = false;
-		for (var i = 0 ; i < p.inventory.length; i++) {
-			if (p.inventory[i].name == "Revival Bead"){
-				beadGet = i;
-				break;
-			}
-		};
-		if (beadGet===false){
-			self.say(target, nick+", you don't have any revival beads! >_<");
-			return;
-		}
-		p.inventory.splice(beadGet,1)
-		t.hp = t.hpMax;
-		self.say(target,p.nick+" brought "+t.nick+" back from the dead! ^-^")
-	};
 
 
 
 	//Wildcard function for debugging.
 	this.test = function(nick,target,text){
-		console.log("\n Running debug function.\n");
+		console.log("\n Running debug callback.\n");
 	};
 
 
@@ -361,7 +266,7 @@ Tsumomo = function(server){
 
 	
 	//Handles incoming messages.
-	this.commands = ["!buy","!yen","!stats","!fight","!mart","!weapons","!armor","!shop","!reset","!rez","!test","!save","!inventory","!potion"];
+	this.commands = ["!buy","!yen","!stats","!fight","!mart","!weapons","!armor","!shop","!reset","!rez","!test","!save","!inventory","!potion","!inv","!revival","!fortune"];
 	this.msgProcess = function(nick, target, text, message){
 		var command = text.split(" ")[0].toLowerCase();
 		
@@ -384,19 +289,22 @@ Tsumomo = function(server){
 
 		console.log(nick.substring(0,10)+"| "+text) //Display chat messages
 
+		//Main command case handler.
 		switch(command){
-			case "!yen": self.yen(nick,target,text); break;
+			case "!yen": yen.yen(self,nick,target,text); break;
 			case "!test": self.test(nick,target,text); break;
 			case "!save": self.save(true); break;
 			case "!stats": self.stats(nick,target,text); break;
 			case "!fight": self.fight(nick,target,text); break;
 			case "!reset": self.reset(nick,target,text); break;
-			case "!rez": self.rez(nick,target,text); break;
+			case "!rez": inv.rez(self,nick,target,text); break;
+			case "!revival": inv.rez(self,nick,target,text); break;
 			case "!mart": mart.greet(self,nick,target,text); break;
 			case "!shop": mart.shop(self,nick,target,text); break;
 			case "!buy": mart.buy(self,nick,target,text); break;
-			case "!inventory": self.inventory(self,nick,target,text); break;
-			case "!potion": self.potion(self,nick,target,text); break;
+			case "!inventory": inv.inventory(self,nick,target,text); break;
+			case "!inv": inv.inventory(self,nick,target,text); break;
+			case "!potion": inv.potion(self,nick,target,text); break;
 		}
 
 		self.save();
