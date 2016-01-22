@@ -1,5 +1,5 @@
 /*
-						TSUMOMO YEN MECHANIC
+						TSUMOMO YEN MODULE
 
 		At the heart of any good web bot is a near-meaningless
 		currency to be collected to a point of obsession with 
@@ -23,7 +23,7 @@ this.yen = function(self,nick,target,text){
 		return false;
 	}
 
-		//If player hasn't waited for the time limit; return.
+	//If player hasn't waited for the time limit; return.
 	if(new Date().getTime() < player.yenTime){
 		var remaining = player.yenTime- new Date().getTime();
 		remaining = Math.ceil(remaining/60000)
@@ -31,9 +31,9 @@ this.yen = function(self,nick,target,text){
 		/*
 						"Sorry" rejection messages if timer hasn't run out
 				Gives a random message if they tried again before their time ran out.
-		.*/
+		*/
 		sryMsg = "";
-		var n = nick; 		 //--.___,- Shorthands for sry messages. Maintaining others for code clarity.
+		var n = nick; 		 //--.___,- Shorthands for sry messages. Maintaining others for 'code clarity.'
 		var r = remaining;    //.'
 		var sry = ["Sorry "+n+", but you have to wait "+r+" more minutes.. ^-^;",
 			"Uwaa~ "+n+"-chan.. There're still "+r+" minutes left for you to wait! '^';",

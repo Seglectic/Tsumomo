@@ -103,8 +103,6 @@ this.consumable = [
 		this.detail = "a small orb for returning souls to　their bodies"
 	}
 
-
-
 ]
 
 
@@ -120,26 +118,39 @@ this.lowArmor = [
 		this.def=2
 		this.value=5000
 		this.name= "Plain Clothes"
-		this.detail="a pair of jeans and a T-shirt"
+		this.detail="a pair of jeans and a T-shirt";
 	},
 
 	this.leatherArmor = function(){
 		this.def = 6;
 		this.value = 10000;
 		this.name = "Leather Armor";
-		this.detail = " hardened leather armor" 
+		this.detail = " hardened leather armor";
+	},
+
+	this.asslessChaps = function(){
+		this.def = Math.floor(Math.random()*10);
+		this.value = Math.floor(Math.random()*2000+500);
+		this.name = "Assless Chaps";
+		this.detail = "some assless chaps.";
 	}
 ]
 
 this.midArmor = [
 
 	this.steelCuirass = function(){
-		this.def = 6;
+		this.def = 9;
 		this.value = 100000;
 		this.name = "Steel Cuirass";
 		this.detail = "a breastplate forged from rigid steel";
 	},
 
+	this.kevlarVest = function(){
+		this.def = 7;
+		this.value = 59000;
+		this.name = "Kevlar® Vest";
+		this.detail = "a bulletproof vest made of Kevlar®.";
+	},
 
 ]
 
@@ -149,7 +160,7 @@ this.hiArmor = [
 		this.def = 15;
 		this.value = 300000;
 		this.name = "Swat Uniform";
-		this.detail = "A set of special forces tactical gear";
+		this.detail = "a set of special forces tactical gear";
 	},
 
 ]

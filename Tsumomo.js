@@ -31,8 +31,8 @@ var items = require('./items');
 var mart = require('./mart');
 var inv = require('./inventory');
 var yen = require('./yen');
-
 var fiend = require('./fiends');
+var timeUpdate = require('./timeUpdate');
 
 	//MAIN TSUMOMO OBJECT
 Tsumomo = function(server){
@@ -44,7 +44,7 @@ Tsumomo = function(server){
 	this.options = { 				//IRC configuration object
 		userName: "Tsumomo",
 		realName: "Tsumomo",
-		channels:["#momoLab","#Fluffington"],
+		channels:["#momoLab"],
 		//channels:["#momoLab"],
 		autoRejoin: true,
 	};
