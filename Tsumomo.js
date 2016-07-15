@@ -33,6 +33,7 @@ var inv = require('./inventory');
 var yen = require('./yen');
 var fiend = require('./fiends');
 var timeUpdate = require('./timeUpdate');
+var fortune = require('./fortune');
 
 	//MAIN TSUMOMO OBJECT
 Tsumomo = function(server){
@@ -53,7 +54,7 @@ Tsumomo = function(server){
 	this.momoMart = {};
 	this.Queue = {};
 	this.path = "./SAVEDATA ["+self.server+"].json"
-	console.log("\n        \x1b[32m [Booting %s FW.%s on %s]  \x1b[0m \n",this.name,this.version,this.server);
+	console.log("\n        \x1b[36m [Booting %s FW.%s on %s]  \x1b[0m \n",this.name,this.version,this.server);
 	this.tsumomo = new irc.Client(this.server,this.name,this.options);
 	
 
@@ -90,11 +91,17 @@ Tsumomo = function(server){
 					self.Players = data.Players;
 					self.momoMart = data.momoMart;
 
-					//Iterate through players for debugging purposes.
+					//Iterates through players on startup
+					console.log("Reinitalizing players..")
+					var dead = ""
 					for (var nick in self.Players) {
 						p = self.Players[nick];
-						if (p.hp == 0){console.log("lol, "+p.nick+" is dead!")}
+						if (p.hp == 0){dead+=p.nick+'  '};
+						self.Players[nick] = new self.player(nick,p);
 					};
+					console.log('[OK]')
+
+					console.log("Dead players: \n"+dead+'\n')
 
 				}
 			}
@@ -122,20 +129,21 @@ Tsumomo = function(server){
 
 	//New player prototype, accepts player object for defaults...]
 	this.player = function(nick,player){
-		this.nick = nick;
-		this.yen = 0;
-		this.yenTime = new Date(2015,1,1,1,1,1,1).getTime();
-		this.fightTime = new Date(2015,1,1,1,1,1,1).getTime();
-		this.level = 3;
-		this.xp = 0;
-		this.str = 8;
-		this.def = 3;
-		this.hp = 15;
-		this.hpMax = this.hp;
-		this.armor = new items.starterArmor() ;
-		this.weapon = new items.starterWeapon() ;
-		this.inventory = [];
-		this.fiend = undefined;
+		this.nick = player.nick|| nick;
+		this.yen = player.yen|| 0;
+		this.yenTime = player.yenTime|| new Date(2015,1,1,1,1,1,1).getTime();
+		this.fightTime = player.fightTime|| new Date(2015,1,1,1,1,1,1).getTime();
+		this.level = player.level|| 3;
+		this.xp = player.xp|| 0;
+		this.str = player.str|| 8;
+		this.def = player.def|| 3;
+		this.hp = player.hp|| 15;
+		this.hpMax = player.hpMax|| this.hp;
+		this.armor = player.armor|| new items.starterArmor() ;
+		this.weapon = player.weapon|| new items.starterWeapon() ;
+		this.inventory = player.inventory|| [];
+		this.fiend = player.fiend|| undefined;
+		this.luck = player.luck || 1;
 	}
 	
 
@@ -201,7 +209,7 @@ Tsumomo = function(server){
 			return;
 		}
 		var p = self.Players[nick];
-		var display = cat("%s | ¥%s | LVL %s [%s XP] | %s/%sHP %s STR %s DEF | Wearing %s [+%s] | Wielding %s [+%s]|",nick,p.yen,p.level,p.xp,p.hp,p.hpMax,p.str,p.def,p.armor.detail,p.armor.def,p.weapon.detail,p.weapon.dmg);
+		var display = self.cat("%s | ¥%s | LVL %s [%s XP] | %s/%sHP %s STR %s DEF | Wearing %s [+%s] | Wielding %s [+%s]|",nick,p.yen,p.level,p.xp,p.hp,p.hpMax,p.str,p.def,p.armor.detail,p.armor.def,p.weapon.detail,p.weapon.dmg);
 		self.say(target,display);
 	};
 

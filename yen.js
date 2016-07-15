@@ -48,8 +48,8 @@ this.yen = function(self,nick,target,text){
 
 		//Rare messages
 		if(Math.random()>0.99){
-			var rare = [n.toUpperCase()+"! . . . please be patient for just "+r+" more minutes!!",
-				n+" got 99999999999999999999999999 yen! You now have OVERFLOW_ERROR. ^-^"
+			var rare = [n.toUpperCase()+"! . . . please be patient for "+r+" more minutes!!",
+				n+" got 99999999999999999999999999 yen! You now have [OVERFLOW_ERROR]! ^-^;"
 			];
 			sryMsg = rare[Math.floor(Math.random()*rare.length)];
 		}
@@ -73,7 +73,7 @@ this.yen = function(self,nick,target,text){
 	//Give player a random amount of yen!
 	var minYen=50;
 	var maxYen=5000;
-	var yen = self.RNG(minYen,maxYen);
+	var yen = self.RNG(minYen,maxYen)*player.luck;
 	player.yen += yen;
 
 	//What % of the max was obtained:
@@ -81,16 +81,14 @@ this.yen = function(self,nick,target,text){
 	var getMsg = ""
 	
 	//Assign reaction 'getMsg' based on size of cut (Must not end with space)
-	if(cut<=10){getMsg= "Ehh.. "+nick+" only got +¥"+yen+" '^';" };
+	if(cut<=10){getMsg = "Ehh.. "+nick+" only got +¥"+yen+" '^';" };
 	if(cut>10){getMsg = nick+" got +¥"+yen+" that's kind of nice. '-';"};
 	if(cut>=30){getMsg = nick+" received "+"+¥"+yen+"! ^-^"};
 	if(cut>=75){getMsg = "Alright, " +nick+ "! " + "+¥" +yen+ "!! ^-^"};
 	if(cut>90){getMsg = "Uwaa!~ Jackpot, "+nick+"!! +¥"+yen+"!!! ^-^"};
 
-	var pouch = player.yen;
-
 	
-	var display = getMsg+" [ ¥"+pouch+" ] ";
+	var display = getMsg+" [ ¥"+player.yen+" ] ";
 
 	self.say(target,display);
 };
