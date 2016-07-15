@@ -45,8 +45,8 @@ Tsumomo = function(server){
 	this.options = { 				//IRC configuration object
 		userName: "Tsumomo",
 		realName: "Tsumomo",
-		// channels:["#momoLab","#Fluffington"],
-		channels:["#momoLab"],
+		channels:["#momoLab","#Fluffington"],
+		// channels:["#momoLab"],
 		autoRejoin: true,
 		floodProtection:true,
 	};
@@ -220,7 +220,7 @@ Tsumomo = function(server){
 			self.pm(nick,"Fighting other players has not been implemented.")
 			return false;
 		};
-		fight.npc(self,target,Players[nick]);
+		fight.npc(self,target,self.Players[nick]);
 	};
 
 	/*Resets a player's stats, commented due to potential vulnerability
