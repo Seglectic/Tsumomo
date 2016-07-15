@@ -1,7 +1,7 @@
 /*
 						❤ TSUMOMO IRC BOT ❤
 
-		Tsumomo is an IRC chat bot designed as a operator  for
+		Tsumomo is an IRC chat bot designed as an operator  for
 		a  text-based  MMORPG  with an IRC interface written in
 		JavaScript for Node.js. 
 
@@ -39,14 +39,15 @@ Tsumomo = function(server){
 	if (!server){this.server="irc.rizon.net";} else{this.server= server;}
 	
 	var self = this; 				//Gives local context reference to events
-	this.version = "0.9.4";
+	this.version = "1.0.1";
 	this.name= "Tsumomo";			//Nick
 	this.options = { 				//IRC configuration object
 		userName: "Tsumomo",
 		realName: "Tsumomo",
-		channels:["#momoLab","#Fluffington"],
-		//channels:["#momoLab"],
+		// channels:["#momoLab","#Fluffington"],
+		channels:["#momoLab"],
 		autoRejoin: true,
+		floodProtection:true,
 	};
 	this.Players = {};
 	this.momoMart = {};
@@ -147,8 +148,10 @@ Tsumomo = function(server){
 	
 	//Send message to channel or nick.
 	this.say = function(target,text){
+		var t = new Date();
+		var tS = t.getMonth()+"/"+t.getDate()+"/"+t.getFullYear()+" "+t.getHours()+":"+t.getMinutes()
 		self.tsumomo.say(target,text)
-		console.log("Tsumomo| "+text);
+		console.log(tS+" Tsumomo: "+text);
 	};
 
 	//Send a message directly to player, not actually a 
@@ -206,7 +209,7 @@ Tsumomo = function(server){
 	this.fight = function(nick,target,text){
 		var text = text.split(" ");
 		if (text[1] in self.Players){
-			self.pm(nick,"Fighting other players will be implemented soon.")
+			self.pm(nick,"Fighting other players has not been implemented.")
 			return false;
 		};
 		fight.npc(self,target,Players[nick]);
@@ -322,4 +325,4 @@ Tsumomo = function(server){
 
 process.stdout.write('\033c'); //Clear screen
 
-Tsumomo()
+Tsumomo = new Tsumomo()
