@@ -45,8 +45,8 @@ Tsumomo = function(server){
 	this.options = { 				//IRC configuration object
 		userName: "Tsumomo",
 		realName: "Tsumomo",
-		channels:["#momoLab","#Fluffington"],
-		// channels:["#momoLab"],
+		// channels:["#momoLab","#Fluffington"],
+		channels:["#momoLab"],
 		autoRejoin: true,
 		floodProtection:true,
 	};

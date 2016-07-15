@@ -74,11 +74,11 @@ this.npc = function(self,target,player){
 	var fDmgMsg = self.cat("The %s hits you for %s DMG!!",fiend.name,fDmg);
 	if (pDmg<=0){
 		pDmg=0;
-		pDmgMsg = cat("%s missed the %s! ",player.nick,fiend.detailName);
+		pDmgMsg = self.cat("%s missed the %s! ",player.nick,fiend.detailName);
 	}
 	if (fDmg<=0){
 		fDmg=0;
-		fDmgMsg = cat("The %s missed! ",fiend.name);
+		fDmgMsg = self.cat("The %s missed! ",fiend.name);
 	}
 
 	fiend.hp -= pDmg;
